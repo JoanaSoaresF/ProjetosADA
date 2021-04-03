@@ -5,44 +5,38 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         //Tests, Piles, Depth
         //int T, P, D;
-        GameOfBeans gb = new GameOfBeans();
+        GameOfBeans game;
 
-        BufferedReader in = new BufferedReader( new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-        int T = Integer.parseInt(in.readLine());
+        int numTests = Integer.parseInt(in.readLine());
 
-        for(int i = 0; i < T; i++){
+        for (int i = 0; i < numTests; i++) {
             //Get P and D
             String[] P_D = in.readLine().split(" ");
-            int P = Integer.parseInt(P_D[0]);
-            int D = Integer.parseInt(P_D[1]);
+            String player = in.readLine();
+            int numPiles = Integer.parseInt(P_D[0]);
+            int depth = Integer.parseInt(P_D[1]);
 
-            String[] Piles = in.readLine().split(" ");
-            int[] aux = new int[P];
+            String[] piles = in.readLine().split(" ");
+            int[] aux = new int[numPiles];
 
-            for(int j = 0; j < P; j++){
-                aux[j] = Integer.parseInt(Piles[j]);
+            for (int j = 0; j < numPiles; j++) {
+                aux[j] = Integer.parseInt(piles[j]);
             }
-
+            game = new GameOfBeans(depth, aux, player);
+            int solution = game.bestJabaScore();
+            System.out.println(solution);
 
 
         }
 
 
-
-
     }
-
-
-
-
-
-
-
 
 
 }
