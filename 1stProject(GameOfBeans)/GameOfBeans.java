@@ -164,7 +164,7 @@ public class GameOfBeans {
                     // it is Pieton's turn to play first
                     int[] play = pietonPlay(i, j);
                     // maxScore = bestScores[i-play[LEFT]][j-play[RIGHT]];
-                    if ((i + play[LEFT]) >= (j - play[RIGHT])) {
+                    if ((i + play[LEFT]) <= (j - play[RIGHT])) {
                         for (int k = 1; k <= maxToRemove; k++) { // k is the number of piles to remove
                             int score;
                             if ((i + play[LEFT] + k) <= j - play[RIGHT]) {
@@ -223,10 +223,19 @@ jaba
 Pieton
 
 
+
 1
 3 1
 1 4 8
 jaba
 
+9
+
+1
+3 1
+1 4 8
+Pieton
+
+4
 
 */
