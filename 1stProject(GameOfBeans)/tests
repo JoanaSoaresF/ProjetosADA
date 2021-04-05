@@ -18,3 +18,10 @@ Jaba
 5 1
 10 5 -3 6 -2
 Jaba
+
+
+//Teste falha Index 3 out of bounds for length 3
+1
+2 3
+10 9
+Jaba

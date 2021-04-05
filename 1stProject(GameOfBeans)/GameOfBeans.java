@@ -104,6 +104,7 @@ public class GameOfBeans {
 
                 //it is Pieton 's turn to play
                 int[] play = pietonPlay(i, j);
+                //FIXME Index 3 out of bounds for length 3
                 int maxScorePieton = bestScores[i + play[LEFT]][j - play[RIGHT]][JABA];
                 bestScores[i][j][PIETON] = maxScorePieton;
 
