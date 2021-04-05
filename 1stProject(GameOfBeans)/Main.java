@@ -1,3 +1,10 @@
+/**
+ * Ada Trabalho 1 - Game of beans
+ *
+ * @author Joana Soares Faria n55754
+ * @author Goncalo Martins Lourenco n55780
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,7 +34,7 @@ public class Main {
             for (int j = 0; j < numPiles; j++) {
                 aux[j] = Integer.parseInt(piles[j]);
             }
-            
+
 
             String player = in.readLine();
 

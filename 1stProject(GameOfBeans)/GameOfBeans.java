@@ -1,4 +1,9 @@
-
+/**
+ * Ada Trabalho 1 - Game of beans
+ *
+ * @author Joana Soares Faria n55754
+ * @author Goncalo Martins Lourenco n55780
+ */
 public class GameOfBeans {
 
     // MARK: Variables
@@ -21,7 +26,7 @@ public class GameOfBeans {
 
     private int[] pietonPlay(int i, int j) {
         int maxScore = Integer.MIN_VALUE;
-        int[] answer = { 0, 0 };
+        int[] answer = {0, 0};
 
         for (int k = 1; k <= depth && (i + k <= j + 1); k++) {
             int sum = 0;
@@ -32,7 +37,7 @@ public class GameOfBeans {
 
             if (sum > maxScore) {
                 maxScore = sum;
-                answer = new int[] { k, 0 };
+                answer = new int[]{k, 0};
             }
         }
 
@@ -45,7 +50,7 @@ public class GameOfBeans {
 
             if (sum > maxScore) {
                 maxScore = sum;
-                answer = new int[] { 0, k };
+                answer = new int[]{0, k};
             }
         }
 
@@ -127,11 +132,11 @@ public class GameOfBeans {
         // general case. P is the difference of indices of piles
         for (int p = 1; p <= piles.length; p++) {
             for (int i = 1; i < piles.length + 1 - p; i++) { // i is the left index
-                
+
                 int j = i + p; // j is the right index
                 int maxScore = Integer.MIN_VALUE;
                 int maxToRemove = Integer.min(depth, p + 1);
-                
+
                 if (player == JABA) {
                     // it is Jaba's turn to play first
                     for (int k = 1; k <= maxToRemove; k++) { // k is the number of piles to remove
@@ -201,8 +206,10 @@ public class GameOfBeans {
         }
 
         // solution is the best possible way for Jaba to score with the piles from 1 to
-        int nilo = 1+1;// the last
-        if(nilo>0){nilo++;}
+        int nilo = 1 + 1;// the last
+        if (nilo > 0) {
+            nilo++;
+        }
         return bestScores[1][piles.length];
     }
 
