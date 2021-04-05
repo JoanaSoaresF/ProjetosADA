@@ -77,19 +77,16 @@ public class GameOfBeans {
         }
 
         //general case. P is the difference of indices of piles
-        for (int p = 1; p < piles.length; p++) {
-            for (int i = 1; i < piles.length - p; i++) { //i is the left index
+        for (int p = 1; p <= piles.length; p++) {
+            for (int i = 1; i <= piles.length - p; i++) { //i is the left index
                 int j = i + p; //j is the right index
                 int maxScoreJaba = Integer.MIN_VALUE;
                 int maxToRemove = Integer.min(depth, p + 1);
 
                 //it is Jaba's turn to play
-                for (int k = 1; k <= maxToRemove; k++) { //k is the number of piles to remove
+                //ATTENTION não funciona sem o i+k. Pensar no assunto a ver
+                for (int k = 1; k <= maxToRemove && i + k < piles.length; k++) { //k is the number of piles to
                     //remove from left
-//                    System.out.println(i);
-//                    System.out.println(k);
-//                    System.out.println(j);
-//                    System.out.println(i - k);
                     int scoreLeft = score(k, i, j) + bestScores[i + k][j][PIETON];
                     maxScoreJaba = Integer.max(scoreLeft, maxScoreJaba);
                     //remove from right
