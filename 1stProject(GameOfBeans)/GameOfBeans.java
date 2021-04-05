@@ -1,3 +1,10 @@
+/**
+ * Ada Trabalho 1 - Game of beans
+ *
+ * @author Joana Soares Faria n55754
+ * @author Goncalo Martins Lourenco n55780
+ */
+
 public class GameOfBeans {
 
     private static final int JABA = 0;
