@@ -1,13 +1,13 @@
 public class GameOfBeans {
 
-    private int[][][] bestScores;
-    private int depth;
-    private int[] piles;
-    private String firstPlayer;
     private static final int JABA = 0;
     private static final int PIETON = 1;
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
+    private final int[][][] bestScores;
+    private final int depth;
+    private final int[] piles;
+    private final String firstPlayer;
 
 
     public GameOfBeans(int depth, int[] piles, String firstPlayer) {
@@ -69,7 +69,7 @@ public class GameOfBeans {
 
 
     public int bestJabaScore() {
-        int player = firstPlayer.toLowerCase().equals("jaba") ? JABA : PIETON;
+        int player = firstPlayer.equalsIgnoreCase("jaba") ? JABA : PIETON;
         //base cases = only one pile left (i=j)
         for (int i = 1; i <= piles.length; i++) {
             bestScores[i][i][PIETON] = 0;
@@ -83,7 +83,7 @@ public class GameOfBeans {
                 int maxScoreJaba = Integer.MIN_VALUE;
                 int maxToRemove = Integer.min(depth, p);
 
-                //it is Jaba's turn to play
+                //it is Jaba 's turn to play
                 for (int k = 1; k <= maxToRemove; k++) { //k is the number of piles to remove
                     //remove from left
                     int scoreLeft = score(k, i, j) + bestScores[i + k][j][PIETON];
@@ -95,7 +95,7 @@ public class GameOfBeans {
 
                 bestScores[i][j][JABA] = maxScoreJaba;
 
-                //it is Pieton's turn to play
+                //it is Pieton 's turn to play
                 int[] play = pietonPlay(i, j);
                 int maxScorePieton = bestScores[i + play[LEFT]][j - play[RIGHT]][JABA];
                 bestScores[i][j][PIETON] = maxScorePieton;
