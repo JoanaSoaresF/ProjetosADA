@@ -102,7 +102,7 @@ public class GameOfBeans {
                 //it is Pieton's turn to play
                 int[] play = pietonPlay(i, j);
                 int maxScorePieton = bestScores[i + play[LEFT]][j - play[RIGHT]][JABA];
-                bestScores[i][j][JABA] = maxScorePieton;
+                bestScores[i][j][PIETON] = maxScorePieton;
 
             }
 
