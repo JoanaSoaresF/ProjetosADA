@@ -81,11 +81,10 @@ public class GameOfBeans {
             for (int i = 1; i <= piles.length - p; i++) { //i is the left index
                 int j = i + p; //j is the right index
                 int maxScoreJaba = Integer.MIN_VALUE;
-                int maxToRemove = Integer.min(depth, p + 1);
+                int maxToRemove = Integer.min(depth, p);
 
                 //it is Jaba's turn to play
-                //ATTENTION não funciona sem o i+k. Pensar no assunto a ver
-                for (int k = 1; k <= maxToRemove && i + k < piles.length; k++) { //k is the number of piles to
+                for (int k = 1; k <= maxToRemove; k++) { //k is the number of piles to remove
                     //remove from left
                     int scoreLeft = score(k, i, j) + bestScores[i + k][j][PIETON];
                     maxScoreJaba = Integer.max(scoreLeft, maxScoreJaba);
