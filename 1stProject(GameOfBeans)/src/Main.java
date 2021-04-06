@@ -1,4 +1,4 @@
-/**
+/*
  * Ada Trabalho 1 - Game of beans
  *
  * @author Joana Soares Faria n55754
@@ -28,6 +28,7 @@ public class Main {
             int numPiles = Integer.parseInt(P_D[0]);
             int depth = Integer.parseInt(P_D[1]);
 
+            //ATTENTION ver erros frequentes nos trabalhos de ADA. Usar charAt?
             String[] piles = in.readLine().split(" ");
             int[] aux = new int[numPiles];
             for (int j = 0; j < numPiles; j++) {
@@ -40,8 +41,6 @@ public class Main {
 
         }
 
-
     }
-
 
 }

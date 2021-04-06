@@ -39,7 +39,6 @@ public class GameOfBeans {
         for (int k = 1; k <= depth && (i + k <= j + 1); k++) { // k is the number of piles to remove
             int sum = 0;
 
-            //TODO change to score
             for (int c = 0; c < k; c++) { // c is a counter to sum all the piles to remove
                 sum += piles[i + c - 1];
             }
@@ -54,8 +53,6 @@ public class GameOfBeans {
         for (int k = 1; k <= depth && (j - k + 1 >= i); k++) {
             int sum = 0;
 
-            //TODO change to score
-            //sum = score(k, i, j)
             for (int c = 0; c < k; c++) {
                 sum += piles[j - c - 1];
             }
