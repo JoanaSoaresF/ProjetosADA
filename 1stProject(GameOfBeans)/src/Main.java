@@ -14,12 +14,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //Tests, Piles, Depth
-        //int T, P, D;
         GameOfBeans game;
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
+        //Tests, Piles, Depth
         int numTests = Integer.parseInt(in.readLine());
 
         for (int i = 0; i < numTests; i++) {
@@ -28,7 +27,6 @@ public class Main {
             int numPiles = Integer.parseInt(P_D[0]);
             int depth = Integer.parseInt(P_D[1]);
 
-            //ATTENTION ver erros frequentes nos trabalhos de ADA. Usar charAt?
             String[] piles = in.readLine().split(" ");
             int[] aux = new int[numPiles];
             for (int j = 0; j < numPiles; j++) {
