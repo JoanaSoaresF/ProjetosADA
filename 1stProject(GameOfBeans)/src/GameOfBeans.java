@@ -104,7 +104,7 @@ public class GameOfBeans {
             bestScores[i][i][PIETON] = 0;
             bestScores[i][i][JABA] = piles[i - 1];
         }
-
+    
         //general case. P is the difference of indices of piles
         for (int p = 1; p < piles.length; p++) {
             for (int i = 1; i <= piles.length - p; i++) { //i is the left index
