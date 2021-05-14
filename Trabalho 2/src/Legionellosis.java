@@ -32,7 +32,7 @@ public class Legionellosis {
 
     public Legionellosis(int numLocations) {
         this.numLocations = numLocations;
-        locationsCheck = new int[numLocations + 1];
+        locationsCheck = new int[numLocations];
         initConnections();
         perilousLocations = new LinkedList<>();
     }
@@ -42,8 +42,8 @@ public class Legionellosis {
      */
     @SuppressWarnings("unchecked")
     private void initConnections() {
-        connections = new List[numLocations + 1];
-        for (int i = 0; i <= numLocations; i++) {
+        connections = new List[numLocations];
+        for (int i = 0; i < numLocations; i++) {
             connections[i] = new LinkedList<>();
         }
     }
@@ -69,7 +69,7 @@ public class Legionellosis {
      * @param numSick  total number of sick people
      */
     public void addSick(int home, int distance, int numSick) {
-        boolean[] found = new boolean[numLocations + 1];
+        boolean[] found = new boolean[numLocations];
         //explore lever by level (each level represents a distance)
         //current level being explored
         Queue<Integer> currentLevel = new LinkedList<>();
@@ -122,6 +122,7 @@ public class Legionellosis {
      */
     public List<Integer> perilousLocations() {
         Collections.sort(perilousLocations);
-        return perilousLocations;
+        // Prevents the receiving method to perform changes on the list
+       return new LinkedList<>(perilousLocations);
     }
 }

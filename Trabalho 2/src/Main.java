@@ -24,15 +24,17 @@ public class Main {
 
         for (int i = 0; i < numConnections; i++) {
             String[] connection = input.readLine().split(" ");
-            int l1 = Integer.parseInt(connection[0]);
-            int l2 = Integer.parseInt(connection[1]);
+            //the problem has vertexes starting in 1, but problem representation starts at 0
+            int l1 = Integer.parseInt(connection[0]) - 1;
+            int l2 = Integer.parseInt(connection[1]) - 1;
             problem.addConnection(l1, l2);
         }
 
         int numSick = Integer.parseInt(input.readLine());
         for (int i = 0; i < numSick; i++) {
             String[] sick = input.readLine().split(" ");
-            int home = Integer.parseInt(sick[0]);
+            //the problem has vertexes starting in 1, but problem representation starts at 0
+            int home = Integer.parseInt(sick[0]) - 1;
             int distance = Integer.parseInt(sick[1]);
             problem.addSick(home, distance, numSick);
         }
@@ -41,12 +43,14 @@ public class Main {
 
 
         if (perilousLoc.size() == 0) {
+            //there are no perilous locations
             System.out.println(0);
         } else {
-            int initial = perilousLoc.remove(0);
+            //the problem has vertexes starting in 1, but problem representation starts at 0
+            int initial = perilousLoc.remove(0) + 1;
             System.out.printf("%d", initial);
             for (int a : perilousLoc) {
-                System.out.printf(" %d", a);
+                System.out.printf(" %d", a + 1);
             }
             System.out.println();
         }
