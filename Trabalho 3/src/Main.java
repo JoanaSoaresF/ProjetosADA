@@ -15,9 +15,9 @@ public class Main {
             int yJ = Integer.parseInt(playersPositions[1]);
             int xK = Integer.parseInt(playersPositions[2]);
             int yK = Integer.parseInt(playersPositions[3]);
-            int solutionJohn = problem.solution(xJ, yJ);
-            int solutionKate = problem.solution(xK, yK);
-            System.out.println("Case #" + i);
+            int solutionJohn = problem.solution(xJ, yJ, new boolean[]{false, true});
+            int solutionKate = problem.solution(xK, yK, new boolean[]{true, false});
+            System.out.println("Case #" + (i+1));
             String john = solutionString(solutionJohn);
             String kate = solutionString(solutionKate);
             System.out.println("John " + john);
@@ -32,7 +32,7 @@ public class Main {
         int numRows = Integer.parseInt(problemInfo[0]);
         int numCols = Integer.parseInt(problemInfo[1]);
         int numMagicWheels = Integer.parseInt(problemInfo[2]);
-        Lost problem = new Lost();
+        Lost problem = new Lost(numRows, numCols);
         for (int y = 0; y < numRows; y++) {
             String row = input.readLine();
             for (int x = 0; x < numCols; x++) {
@@ -45,7 +45,7 @@ public class Main {
             int x = Integer.parseInt(magicWheel[0]);
             int y = Integer.parseInt(magicWheel[1]);
             int cost = Integer.parseInt(magicWheel[2]);
-            problem.addMagicWheel(x, y, cost);
+            problem.addMagicWheel(i, x, y, cost);
         }
 
         return problem;
@@ -53,10 +53,10 @@ public class Main {
 
     private static String solutionString(int solutionJohn) {
         String string;
-        if (solutionJohn == Integer.MAX_VALUE) {
+        if (solutionJohn == Lost.UNREACHABLE) {
             string = "Unreachable";
 
-        } else if (solutionJohn == Integer.MIN_VALUE) {
+        } else if (solutionJohn == Lost.LOST_IN_TIME) {
             string = "Lost in Time";
         } else {
             string = String.valueOf(solutionJohn);
