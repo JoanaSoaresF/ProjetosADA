@@ -11,10 +11,10 @@ public class Main {
         for (int i = 0; i < numTestCases; i++) {
             Lost problem = processProblem(input);
             String[] playersPositions = input.readLine().split(" ");
-            int xJ = Integer.parseInt(playersPositions[0]);
-            int yJ = Integer.parseInt(playersPositions[1]);
-            int xK = Integer.parseInt(playersPositions[2]);
-            int yK = Integer.parseInt(playersPositions[3]);
+            int yJ = Integer.parseInt(playersPositions[0]);
+            int xJ = Integer.parseInt(playersPositions[1]);
+            int yK = Integer.parseInt(playersPositions[2]);
+            int xK = Integer.parseInt(playersPositions[3]);
             int solutionJohn = problem.solution(xJ, yJ, new boolean[]{false, true});
             int solutionKate = problem.solution(xK, yK, new boolean[]{true, false});
             System.out.println("Case #" + (i+1));
@@ -32,18 +32,23 @@ public class Main {
         int numRows = Integer.parseInt(problemInfo[0]);
         int numCols = Integer.parseInt(problemInfo[1]);
         int numMagicWheels = Integer.parseInt(problemInfo[2]);
-        Lost problem = new Lost(numRows, numCols);
+        Lost problem = new Lost(numRows, numCols, numMagicWheels);
         for (int y = 0; y < numRows; y++) {
             String row = input.readLine();
             for (int x = 0; x < numCols; x++) {
-                int type = positionType(row.charAt(x));
-                problem.addIslandPosition(x, y, type);
+                char charAt = row.charAt(x);
+                int type = positionType(charAt);
+                int w = -1;
+                if(type == Lost.MAGIC_WHEEL){
+                    w = Integer.parseInt(String.valueOf(charAt));
+                }
+                problem.addIslandPosition(x, y, type, w);
             }
         }
-        for (int i = 0; i < numMagicWheels; i++) {
+        for (int i = 1; i <= numMagicWheels; i++) {
             String[] magicWheel = input.readLine().split(" ");
-            int x = Integer.parseInt(magicWheel[0]);
-            int y = Integer.parseInt(magicWheel[1]);
+            int y = Integer.parseInt(magicWheel[0]);
+            int x = Integer.parseInt(magicWheel[1]);
             int cost = Integer.parseInt(magicWheel[2]);
             problem.addMagicWheel(i, x, y, cost);
         }
