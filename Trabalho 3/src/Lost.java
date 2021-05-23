@@ -39,11 +39,12 @@ public class Lost {
 
     /**
      * magic wheels key is the number presented and value is the magic wheel codification position
+     * (from 0 to numRows*numCols-1, the total number of cells)
      */
     private final Map<Integer, Integer> magicWheels;
     /**
      * all cells of the island. key is the (x,y) value and the value is the codification position
-     * (from 0 to numRows*numCols-1, the total number of cells
+     * (from 0 to numRows*numCols-1, the total number of cells)
      */
     private final Map<Integer, Integer> places;
     private final int numRows;
@@ -75,40 +76,69 @@ public class Lost {
         return new int[]{x, y};
     }
 
+    /**
+     * Adds the edges associated with a given position. The graph edges are separated by type,
+     * the edges will the added to the correspondent Type List.
+     *
+     * @param x          x position to the island's cell to evaluate
+     * @param y          y position to the island's cell to evaluate
+     * @param type       type of island's cell to evaluate
+     * @param magicWheel if the cell is a magic island this is the number presented in the grid
+     */
     public void addIslandPosition(int x, int y, int type, int magicWheel) {
         island[y][x] = type;
         int start = posToInt(x, y);
         int v = numPlaces++;
         places.put(start, v);
         if (y > 0 && type != OBSTACLE) { //has up
-            int up = island[y - 1][x];
+            //if the current cell has an upper cell, add the 2 edges to and from the current cell
+            int upType = island[y - 1][x];
             int upPos = places.get(posToInt(x, y - 1));
-            addPaths(type, v, up, upPos);
+            addPaths(type, v, upType, upPos);
         }
         if (x > 0 && type != OBSTACLE) { //has left
-            int left = island[y][x - 1];
+            //if the current cell has a left cell, add the 2 edges to and from the current cell
+            int leftType = island[y][x - 1];
             int leftPos = places.get(posToInt(x - 1, y));
-            addPaths(type, v, left, leftPos);
+            addPaths(type, v, leftType, leftPos);
         }
 
         if (type == MAGIC_WHEEL) {
+            //if it is a magic wheel store the number presented in the grid and its codification
+            // position
             magicWheels.put(magicWheel, v);
         }
         if (type == EXIT) {
+            //store the codification position of the exit
             EXIT_POS = v;
         }
     }
 
+    /**
+     * Converts an (x,y) position to an int
+     *
+     * @param x x position
+     * @param y y  position
+     * @return transformed (x,y)  position to an int
+     */
     private int posToInt(int x, int y) {
         return x * 100 + y;
     }
 
+    /**
+     * Adds the edges between two edges to the correspondent types list
+     *
+     * @param startType type of the start position
+     * @param startPos  codified start position
+     * @param endType   type of the end position
+     * @param endPos    end start position
+     */
     private void addPaths(int startType, int startPos, int endType, int endPos) {
         int[] edgeFrom = new int[]{startPos, endPos, cost(startType)};
         int[] edgeTo = new int[]{endPos, startPos, cost(endType)};
 
         if (startType == WATER || endType == WATER) {
-            //is is a path connected to a water slot
+            //is is a path connected to a water slot and is not from the exit
             if (startType != EXIT) {
                 waterPaths.add(edgeFrom);
             }
@@ -116,7 +146,7 @@ public class Lost {
                 waterPaths.add(edgeTo);
             }
         } else if (endType != OBSTACLE) {
-            //if is not an obstacle add path to left, bidirecional
+            //if is not an obstacle add path to normal paths, bidirectional
             if (startType != EXIT) {
                 normalPaths.add(edgeFrom);
             }
@@ -126,10 +156,24 @@ public class Lost {
         }
     }
 
+    /**
+     * Computes the cost of exiting a cell
+     *
+     * @param type type of the cell to exit
+     * @return the cost
+     */
     private int cost(int type) {
         return type == GRASS || type == MAGIC_WHEEL ? GRASS_COST : WATER_COST;
     }
 
+    /**
+     * Adds the edges from a magic wheel
+     *
+     * @param i    magic wheel that is tha start of the edge
+     * @param x    x position of the end of the edge
+     * @param y    y position of the end of the edge
+     * @param cost cost of the edge of the magic wheel
+     */
     public void addMagicWheel(int i, int x, int y, int cost) {
         int start = magicWheels.get(i);
         int end = places.get(posToInt(x, y));
@@ -138,6 +182,18 @@ public class Lost {
 
     }
 
+    /**
+     * Computes the length of the path between a players position to the exit.
+     * Considers the type of player, if he can swim or use the wheel
+     *
+     * @param originX    x start position of the player
+     * @param originY    x start position of the player
+     * @param playerType boolean array whit the type player. Is he can swim in the first position
+     *                   and if he can use the magic wheel in the second position
+     * @return the length of the path from the player's initial position to the exit. If the exit
+     * is unreachable returns INTEGER.MAX_VALUE. If the graph has as negative weight cycle
+     * reachable by the player returns INTEGER.MIN_VALUE
+     */
     public int solution(int originX, int originY, boolean[] playerType) {
         int[] lengths = new int[numRows * numCols];
 
@@ -149,6 +205,7 @@ public class Lost {
         for (int i = 1; i < lengths.length; i++) {
             changes = updateLength(lengths, playerType);
             if (!changes) {
+                // length vector stabilized, end cycle
                 break;
             }
         }
@@ -163,12 +220,15 @@ public class Lost {
     }
 
     private boolean updateLength(int[] lengths, boolean[] playerType) {
+        //Iterates all edges in the graph by types. The normal edges are always considered
         boolean changes = updateLengthsInSubPaths(lengths, normalPaths);
         if (playerType[CAN_SWIM]) {
-            changes = updateLengthsInSubPaths(lengths, waterPaths);
+            //iterated only if the player can swim
+            changes = updateLengthsInSubPaths(lengths, waterPaths) || changes;
         }
         if (playerType[CAN_USE_WHEEL] && magicWheels.size() > 0) {
-            changes = updateLengthsInSubPaths(lengths, magicWheelPaths);
+            //iterated only if the player can use the magic wheels
+            changes = updateLengthsInSubPaths(lengths, magicWheelPaths) || changes;
         }
         return changes;
     }
