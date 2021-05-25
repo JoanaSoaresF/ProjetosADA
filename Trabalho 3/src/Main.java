@@ -1,7 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+/*
+ * Ada Trabalho 3 - Lost
+ *
+ * @author Joana Soares Faria n55754
+ * @author Goncalo Martins Lourenco n55780
+ */
 public class Main {
 
     public static void main(String[] args) throws IOException {

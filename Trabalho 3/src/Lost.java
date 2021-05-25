@@ -1,5 +1,10 @@
 import java.util.*;
-
+/*
+ * Ada Trabalho 3 - Lost
+ *
+ * @author Joana Soares Faria n55754
+ * @author Goncalo Martins Lourenco n55780
+ */
 public class Lost {
     //Types of places in the island
     public final static int GRASS = 0;
@@ -7,7 +12,7 @@ public class Lost {
     public final static int WATER = 2;
     public final static int MAGIC_WHEEL = 3;
     public final static int EXIT = 4;
-    //Paths
+    //No paths constants
     public static final int UNREACHABLE = Integer.MAX_VALUE;
     public static final int LOST_IN_TIME = Integer.MIN_VALUE;
     //Type of players
@@ -16,35 +21,35 @@ public class Lost {
     //Cost of paths from cells in island
     private final static int WATER_COST = 2;
     private final static int GRASS_COST = 1;
-    //Paths structure
+    //Paths structure - way the edge is represented
     private static final int START_PLACE = 0;
     private static final int END_PLACE = 1;
     private static final int PLACE_COST = 2;
     /**
-     * Types of cells in the island positions
+     * Types of cells in which island's positions
      */
     private final int[][] island;
     /**
-     * Paths from to a Grass cells
+     * Paths from and to a Grass cell
      */
     private final List<int[]> normalPaths;
     /**
-     * Paths to and from a water cell
+     * Paths to or from a water cell
      */
     private final List<int[]> waterPaths;
     /**
-     * paths from the magic wheel
+     * Paths from the magic wheel
      */
     private final List<int[]> magicWheelPaths;
 
     /**
-     * magic wheels key is the number presented and value is the magic wheel codification position
-     * (from 0 to numRows*numCols-1, the total number of cells)
+     * All magic wheels. Key is the number presented and value is the magic wheel codification
+     * position (from 0 to numRows*numCols-1, the total number of cells)
      */
     private final Map<Integer, Integer> magicWheels;
     /**
-     * all cells of the island. key is the (x,y) value and the value is the codification position
-     * (from 0 to numRows*numCols-1, the total number of cells)
+     * All cells of the island. key is the (x,y) value, in integer form, and the value is the
+     * codification position (from 0 to numRows*numCols-1, the total number of cells)
      */
     private final Map<Integer, Integer> places;
     private final int numRows;
@@ -70,12 +75,6 @@ public class Lost {
 
     }
 
-    private int[] intToPos(int pos) {
-        int x = pos / 100;
-        int y = pos % 100;
-        return new int[]{x, y};
-    }
-
     /**
      * Adds the edges associated with a given position. The graph edges are separated by type,
      * the edges will the added to the correspondent Type List.
@@ -88,29 +87,29 @@ public class Lost {
     public void addIslandPosition(int x, int y, int type, int magicWheel) {
         island[y][x] = type;
         int start = posToInt(x, y);
-        int v = numPlaces++;
-        places.put(start, v);
+        int pos = numPlaces++;
+        places.put(start, pos);
         if (y > 0 && type != OBSTACLE) { //has up
             //if the current cell has an upper cell, add the 2 edges to and from the current cell
             int upType = island[y - 1][x];
             int upPos = places.get(posToInt(x, y - 1));
-            addPaths(type, v, upType, upPos);
+            addPaths(type, pos, upType, upPos);
         }
         if (x > 0 && type != OBSTACLE) { //has left
             //if the current cell has a left cell, add the 2 edges to and from the current cell
             int leftType = island[y][x - 1];
             int leftPos = places.get(posToInt(x - 1, y));
-            addPaths(type, v, leftType, leftPos);
+            addPaths(type, pos, leftType, leftPos);
         }
 
         if (type == MAGIC_WHEEL) {
             //if it is a magic wheel store the number presented in the grid and its codification
             // position
-            magicWheels.put(magicWheel, v);
+            magicWheels.put(magicWheel, pos);
         }
         if (type == EXIT) {
             //store the codification position of the exit
-            EXIT_POS = v;
+            EXIT_POS = pos;
         }
     }
 
@@ -126,19 +125,19 @@ public class Lost {
     }
 
     /**
-     * Adds the edges between two edges to the correspondent types list
+     * Adds the edges between two vertices to the correspondent types list
      *
      * @param startType type of the start position
      * @param startPos  codified start position
      * @param endType   type of the end position
-     * @param endPos    end start position
+     * @param endPos    codified end position
      */
     private void addPaths(int startType, int startPos, int endType, int endPos) {
         int[] edgeFrom = new int[]{startPos, endPos, cost(startType)};
         int[] edgeTo = new int[]{endPos, startPos, cost(endType)};
 
         if (startType == WATER || endType == WATER) {
-            //is is a path connected to a water slot and is not from the exit
+            //if is a path connected to a water cell and is not from the exit
             if (startType != EXIT) {
                 waterPaths.add(edgeFrom);
             }
@@ -169,7 +168,7 @@ public class Lost {
     /**
      * Adds the edges from a magic wheel
      *
-     * @param i    magic wheel that is tha start of the edge
+     * @param i    magic wheel that is the start of the edge
      * @param x    x position of the end of the edge
      * @param y    y position of the end of the edge
      * @param cost cost of the edge of the magic wheel
@@ -183,15 +182,15 @@ public class Lost {
     }
 
     /**
-     * Computes the length of the path between a players position to the exit.
+     * Computes the length of the path between a player's position to the exit.
      * Considers the type of player, if he can swim or use the wheel
      *
      * @param originX    x start position of the player
-     * @param originY    x start position of the player
-     * @param playerType boolean array whit the type player. Is he can swim in the first position
+     * @param originY    y start position of the player
+     * @param playerType boolean array with the type player. If he can swim in the first position
      *                   and if he can use the magic wheel in the second position
      * @return the length of the path from the player's initial position to the exit. If the exit
-     * is unreachable returns INTEGER.MAX_VALUE. If the graph has as negative weight cycle
+     * is unreachable returns INTEGER.MAX_VALUE. If the graph has a negative weight cycle
      * reachable by the player returns INTEGER.MIN_VALUE
      */
     public int solution(int originX, int originY, boolean[] playerType) {
@@ -215,7 +214,6 @@ public class Lost {
             lengths[EXIT_POS] = LOST_IN_TIME;
         }
 
-
         return lengths[EXIT_POS];
     }
 
@@ -233,6 +231,12 @@ public class Lost {
         return changes;
     }
 
+    /**
+     * Performs the update length of the algorithm
+     * @param lengths array of lengths used by Bellman-Ford algorithm
+     * @param paths list of the paths to consider
+     * @return if there are any changes in the vector lengths
+     */
     private boolean updateLengthsInSubPaths(int[] lengths, List<int[]> paths) {
         boolean changes = false;
         for (int[] path : paths) {
